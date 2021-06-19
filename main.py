@@ -79,7 +79,7 @@ def work(q):
         # print(f"GOT INTENT {intent}")
         result = act_by_intent(intent, q)
         if result == None:
-            data = query( { "inputs" : {"text" : q} } )
+            data = query( { "inputs" : {"text" : q} , "options": {"wait_for_model": True  } } )
             result = data["generated_text"]
             # print(result)
     except Exception as e:
