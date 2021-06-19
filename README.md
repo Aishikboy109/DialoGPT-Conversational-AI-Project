@@ -23,3 +23,5 @@ Installation :
 Running the program :
     `python main.py`
 
+**NOTE** :
+This project is under development
