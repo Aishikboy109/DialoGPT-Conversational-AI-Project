@@ -49,11 +49,9 @@ client = wolframalpha.Client("U78Y2E-GR8KLU8U5U")
 
 
 def wolframalpha_search(query):
-    while True:
-
-        res = client.query(query)
-        ans = next(res.results).text
-        return ans
+    res = client.query(query)
+    ans = next(res.results).text
+    return ans
 
 
 def get_audio():
@@ -78,17 +76,17 @@ def get_audio():
 def work(q):
     try:
         intent = get_intent(q)
-        print(f"GOT INTENT {intent}")
+        # print(f"GOT INTENT {intent}")
         result = act_by_intent(intent, q)
         if result == None:
             data = query( { "inputs" : {"text" : q} } )
             result = data["generated_text"]
-            print(result)
+            # print(result)
     except Exception as e:
-        print("DID NOT GET ANY INTENT!!")
+        # print("DID NOT GET ANY INTENT!!")
         data = query( { "inputs" : {"text" : q} } )
         result = data["generated_text"]
-        print(result)
+        # print(result)
     return result
 
 
@@ -98,17 +96,25 @@ def act_by_intent(intent, inp):
         response = agent.query(inp)
         result = response['result']
         searchstring = result['parameters']['searched_item']
-        print(searchstring)
+        cprint(f"Searching for : {searchstring}",'orange')
+        
         # if wikipedia.summary(searchstring,sentences = 2):
-        res = wikipedia.summary(searchstring, sentences=2)
+        try:
+            res = wikipedia.summary(searchstring, sentences=2)
         # return res
-        print(res)
     # res = wolframalpha_search(searchstring)
+        except Exception as exception:
+            try:
+                res = wolframalpha_search(searchstring)
+            except Exception as e:
+                res = f"Could not find a result for {searchstring}"
         return res
 # result=""
 
 while True:
-    q = input("USER : ")
+    q = get_audio()
+    if q == None:
+        continue
     cprint("USER : {}".format(q), 'green')
     # global result
     # if get_intent(q):
@@ -121,7 +127,7 @@ while True:
     #     print(result)
     # return result
     result = work(q)
-    cprint(f"DialoGPT : {result}", 'red')
+    cprint(f"DialoGPT : {result}", 'cyan')
     speak(result)
     if "bye" in q:
         break
