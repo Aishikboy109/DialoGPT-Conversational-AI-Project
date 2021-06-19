@@ -2,8 +2,8 @@
 This is a very basic conversational AI, using DialoGPT model from `https://huggingface.co/microsoft/DialoGPT-large`. I used their Web API, so, that anyone, who does not have a good amount of GPU can use this project easily
 
 TODO:
-    [*] Add the basic functionality of conversation.
-    [*] Add the ability to search the web and speak out the results.
+    [-] Add the basic functionality of conversation.
+    [-] Add the ability to search the web and speak out the results.
     [] Add the ability to tell jokes.
     [] Add the ability to pull up results from a Google Search.
     [] Add a requirements.txt
