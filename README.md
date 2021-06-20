@@ -29,3 +29,4 @@ Running the program :
 
 **NOTE** :
 This project is under development
+You need to sign up for at `https://huggingface.co/login` , get your own API Key, paste it in `main.py` and then run the code.
