@@ -25,6 +25,7 @@ Installation :
     `git clone https://github.com/Aishikboy109/DialoGPT-Conversational-AI-Project.git`
 
 Running the program :
+    `cd DialoGPT-Conversational-AI-Project`
     `python main.py`
 
 **NOTE** :
