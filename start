@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo "Starting..."
-
-python3 ~/MEGAsync/My\ Passion\ Projects/DialoGPT-Test/main.py
