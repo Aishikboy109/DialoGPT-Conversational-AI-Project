@@ -1,7 +1,7 @@
 # DialoGPT-Conversational-AI-Project
 
 AUTHOR : Aishik Bandyopadhyay
-DATE OF UPLOAD : 19.6.21
+DATE OF UPLOAD : 19.11.21
 
 This is a very basic conversational AI, using DialoGPT model from `https://huggingface.co/microsoft/DialoGPT-large`. I used their Web API, so, that anyone, who does not have a good amount of GPU can use this project easily
 
