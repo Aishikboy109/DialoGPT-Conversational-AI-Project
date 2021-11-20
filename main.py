@@ -171,7 +171,7 @@ def work(q):
         # print(f"ERROR : {e}")
         data = query({"inputs": {"text": q}})
         result = data["generated_text"]
-        # print(result)
+        
     return result
 
 
