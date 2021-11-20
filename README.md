@@ -12,15 +12,6 @@ TODO:
     [] Add the ability to pull up results from a Google Search.
     [] Add a requirements.txt
     
-Prerequisites:
-    - Pyaudio (pip install pyaudio)
-    - SpeechRecognition (pip install speech_recongnition)
-    - wikipedia (pip install wikipedia)
-    - api.ai (pip install api.ai)
-    - requests (pip install requests)
-    - json (pip install json)
-    - gtts (pip install gtts)
-
 Installation :
     `git clone https://github.com/Aishikboy109/DialoGPT-Conversational-AI-Project.git`
 
@@ -29,5 +20,6 @@ Running the program :
     `python main.py`
 
 **NOTE** :
-This project is under development
-You need to sign up for at `https://huggingface.co/login` , get your own API Key, paste it in `main.py` and then run the code.
+-This project is under development
+-You need to install pyaudio manually : `sudo apt install python3-pyaudio` (For Debian-based Linux Distros), `pip install pyaudio` (For Windows)
+-You need to sign up for at `https://huggingface.co/login` , get your own API Key, paste it in `main.py` and then run the code.
