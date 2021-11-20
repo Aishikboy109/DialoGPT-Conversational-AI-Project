@@ -36,7 +36,8 @@ wit_access_token = os.getenv("WIT_ACCESS_TOKEN")
 DIALOGPT_API_TOKEN = os.getenv("HUGGINGFACE_API_KEY")
 API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 headers = {"Authorization": f"Bearer {DIALOGPT_API_TOKEN}"}
-wolframalpha_client = wolframalpha.Client("U78Y2E-GR8KLU8U5U")
+
+wolframalpha_client = wolframalpha.Client(os.getenv("WOLFRAMALPHA_API_KEY"))
 
 
 def wolframalpha_search(query):
@@ -170,7 +171,7 @@ def work(q):
         # print(f"ERROR : {e}")
         data = query({"inputs": {"text": q}})
         result = data["generated_text"]
-        print(result)
+        # print(result)
     return result
 
 
