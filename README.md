@@ -8,9 +8,9 @@ This is a very basic conversational AI, using DialoGPT model from `https://huggi
 TODO:
     [-] Add the basic functionality of conversation.
     [-] Add the ability to search the web and speak out the results.
-    [] Add the ability to tell jokes.
-    [] Add the ability to pull up results from a Google Search.
-    [] Add a requirements.txt
+    [-] Add the ability to tell jokes.
+    [-] Add the ability to pull up results from a Google Search.
+    [-] Add a requirements.txt
     
 Installation :
     `git clone https://github.com/Aishikboy109/DialoGPT-Conversational-AI-Project.git`
