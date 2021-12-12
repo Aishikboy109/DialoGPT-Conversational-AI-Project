@@ -153,6 +153,9 @@ def act_by_intent(intent, inp):
     else:
         return None
 
+    #TODO
+#def wish():
+
 
 def work(q):
 
