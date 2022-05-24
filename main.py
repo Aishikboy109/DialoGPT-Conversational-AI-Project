@@ -33,14 +33,14 @@ def speak(text):
 
 
 # wit_access_token = os.getenv("WIT_ACCESS_TOKEN")
-wit_access_token = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
+wit_access_token = "Get your own Wit.ai API key from wit.ai!"
 
 # DIALOGPT_API_TOKEN = os.getenv("HUGGINGFACE_API_KEY")
-DIALOGPT_API_TOKEN = "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"
+DIALOGPT_API_TOKEN = "Get your own huggingface API Key!"
 API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 headers = {"Authorization": f"Bearer {DIALOGPT_API_TOKEN}"}
 
-wolframalpha_client = wolframalpha.Client("AYAJ6Y-K686QW5UA3")
+wolframalpha_client = wolframalpha.Client("Get your own WOlframalpha API key!")
 
 
 def wolframalpha_search(query):
@@ -69,7 +69,7 @@ def query(payload):
 
 def weather(city):
     # weather_api_key = os.getenv("WEATHER_API_KEY")
-    weather_api_key = "bb41e4817b91ff70028671598e6c4714"
+    weather_api_key = "Get your Own Key from OpenWeatherMap!"
     # speak("Enter the name of the city : ")
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={weather_api_key}"
     results = requests.request(method="POST", url=url)
