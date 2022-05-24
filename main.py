@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import requests
@@ -31,13 +32,15 @@ def speak(text):
         speak_windows(text)
 
 
-wit_access_token = os.getenv("WIT_ACCESS_TOKEN")
+# wit_access_token = os.getenv("WIT_ACCESS_TOKEN")
+wit_access_token = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
 
-DIALOGPT_API_TOKEN = os.getenv("HUGGINGFACE_API_KEY")
+# DIALOGPT_API_TOKEN = os.getenv("HUGGINGFACE_API_KEY")
+DIALOGPT_API_TOKEN = "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"
 API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 headers = {"Authorization": f"Bearer {DIALOGPT_API_TOKEN}"}
 
-wolframalpha_client = wolframalpha.Client(os.getenv("WOLFRAMALPHA_API_KEY"))
+wolframalpha_client = wolframalpha.Client("AYAJ6Y-K686QW5UA3")
 
 
 def wolframalpha_search(query):
@@ -45,6 +48,10 @@ def wolframalpha_search(query):
     ans = next(res.results).text
     return ans
 
+def query_wit(message):
+    client = Wit(wit_access_token)
+    resp = client.message(message)
+    return resp
 
 def get_intent(message):
     client = Wit(wit_access_token)
@@ -60,11 +67,11 @@ def query(payload):
     return json.loads(response.content.decode("utf-8"))
 
 
-def weather():
-    weather_api_key = os.getenv("WEATHER_API_KEY")
-    speak("Enter the name of the city : ")
-    city = get_audio()
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+def weather(city):
+    # weather_api_key = os.getenv("WEATHER_API_KEY")
+    weather_api_key = "bb41e4817b91ff70028671598e6c4714"
+    # speak("Enter the name of the city : ")
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={weather_api_key}"
     results = requests.request(method="POST", url=url)
     jsondata = results.json()
     weather_description = jsondata["weather"][0]["description"]
@@ -74,27 +81,39 @@ def weather():
     pressure = jsondata["main"]["pressure"]
     humidity = jsondata["main"]["humidity"]
     wind_speed = jsondata["wind"]["speed"]
-
+    cprint(f"Weather in {city} is {weather_description}", "blue")
     speak(f"{weather_description}")
     time.sleep(0.6)
-
-    weather_data = f"""
-    temperature {temp}  degree celsius
-    maximum temperature {temp_max}  degree celsius      
-    minimum temperature {temp_min}  degree celsius
-    Pressure {pressure}    millibars
-    Humidity {humidity}
-    wind speed {wind_speed}  knots
-    """
-
-    speak(weather_data)
-
+    cprint("DialoGPT : Do you want to hear more about the weather?(Type 'y' or 'n')", "cyan")
+    speak("Do you want to hear more about the weather?(Type 'y' or 'n')")
+    ans = input(">>")
+    if ans == "y":
+        weather_data = f"""
+        temperature {temp}  degree celsius
+        maximum temperature {temp_max}  degree celsius      
+        minimum temperature {temp_min}  degree celsius
+        Pressure {pressure}    millibars
+        Humidity {humidity}
+        wind speed {wind_speed}  knots
+        """
+        cprint(f"{weather_data}", "blue")
+        speak(weather_data)
+    else:
+        return
 
 searchstring = ""
 
+# def tell_time():
+#     time = time.strftime("%I:%M:%S")
+#     return f"The time is {time}"
+
+# def tell_date():
+#     date = time.strftime("%d/%m/%Y")
+#     return f"The date is {date}"
 
 def act_by_intent(intent, inp):
     # print("ENTERED ACT BY INTENT METHOD!!!")
+    # print("hullo")
     if "search" in intent:
         client = Wit(wit_access_token)
         resp = client.message(inp)
@@ -130,7 +149,21 @@ def act_by_intent(intent, inp):
                 for i in google_results:
                     res += f"\n{i}"
         return res
-
+    # elif "wit$get_time" in intent:
+    #     # print("hullo0")
+    #     res = datetime.now().strftime('%I:%M:%S')
+    #     return res
+        # print("hullo0" + res)            
+        # return res
+    # elif "wit$get_date" in intent:
+    #     res = tell_date()
+    #     return res
+    elif "wit$get_weather" in intent:
+        response = query_wit(inp)
+        location = response["entities"]["wit$location:location"][0]["resolved"]["values"][0]["name"]
+        weather(location)
+        return ""
+        
     elif "restart_computer" in intent:
         res = "Restarting computer..."
         if OS == "linux":
@@ -151,6 +184,7 @@ def act_by_intent(intent, inp):
         return res
 
     else:
+        # print("hullo2")
         return None
 
     #TODO
@@ -158,15 +192,21 @@ def act_by_intent(intent, inp):
 
 
 def work(q):
-
+    # if "weather" in q:
     try:
         intent = get_intent(q)
+        # print(1)
+        if "wit$get_time" in intent:
+            # print(2)
+            res = datetime.now().strftime('%I:%M:%S')
+            # print(res)
+        print("INTENT : ", intent)
         res = act_by_intent(intent, q)
         # print(f"RESULT {res}")
         if res == None:
             data = query({"inputs": {"text": q}, "options": {"wait_for_model": True}})
             result = data["generated_text"]
-            print("Result without intent", result)
+            # print("Result without intent", result)
         else:
             result = res
     except Exception as e:
@@ -205,11 +245,12 @@ while True:
         continue
     cprint("USER : {}".format(q), "green")
     final_result = work(q)
-    cprint(f"DialoGPT : {final_result}", "cyan")
-    # if OS == "linux":
-    #     speak_linux(result)
-    # elif OS == "windows":
-    #     speak_windows(result)
+    if final_result:
+        cprint(f"DialoGPT : {final_result}", "cyan")
+    if OS == "linux":
+        speak_linux(final_result)
+    elif OS == "windows":
+        speak_windows(final_result)
 
     if "bye" in q:
         break
