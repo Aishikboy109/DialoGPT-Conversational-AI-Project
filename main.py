@@ -137,7 +137,8 @@ def act_by_intent(intent, inp):
                 + f"\nHere is more about {searchstring} : "
             )
             for i in google_results:
-                res += f"\n{i}"
+                # res += f"\n{i}"
+                print(f"\n{i}")
         # return res
         # res = wolframalpha_search(searchstring)
         except Exception as exception:
@@ -155,7 +156,9 @@ def act_by_intent(intent, inp):
                     + f"\nHere is more about {searchstring} : "
                 )
                 for i in google_results:
-                    res += f"\n{i}"
+                    # res += f"\n{i}"
+                    print(f"\n{i}")
+
         return res
     # elif "wit$get_time" in intent:
     #     # print("hullo0")
