@@ -41,8 +41,10 @@ def speak(text):
 
 
 # WIT_ACCESS_TOKEN = os.getenv("WIT_ACCESS_TOKEN")
-WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
-WEATHER_API_KEY = "bb41e4817b91ff70028671598e6c4714"
+# global WIT_ACCESS_TOKEN
+# global WEATHER_API_KEY
+# WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
+# WEATHER_API_KEY = "bb41e4817b91ff70028671598e6c4714"
 DIALOGPT_API_TOKEN = "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"
 WOLFRAMALPHA_API_KEY = "AYAJ6Y-K686QW5UA3"
 # DIALOGPT_API_TOKEN = os.getenv("HUGGINGFACE_API_KEY")
@@ -58,11 +60,13 @@ def wolframalpha_search(query):
     return ans
 
 def query_wit(message):
+    WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
     client = Wit(WIT_ACCESS_TOKEN)
     resp = client.message(message)
     return resp
 
 def get_intent(message):
+    WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
     client = Wit(WIT_ACCESS_TOKEN)
     resp = client.message(message)
     intent = resp["intents"][0]["name"]
@@ -78,6 +82,7 @@ def query(payload):
 
 def weather(city):
     # WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+    WEATHER_API_KEY = "bb41e4817b91ff70028671598e6c4714"
     # speak("Enter the name of the city : ")
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}"
     results = requests.request(method="POST", url=url)
@@ -123,42 +128,51 @@ def act_by_intent(intent, inp):
     # print("ENTERED ACT BY INTENT METHOD!!!")
     # print("hullo")
     if "search" in intent:
+        WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
         client = Wit(WIT_ACCESS_TOKEN)
         resp = client.message(inp)
-        # print("GOT RESPONSE FROM WIT.AI : ".format(resp))
+        print("GOT RESPONSE FROM WIT.AI : ".format(resp))
         searchstring = resp["entities"]["wit$search_query:search_query"][0]["value"]
-        # print(f"GOT SEARCH STRING {searchstring}")
+        print(f"GOT SEARCH STRING {searchstring}")
         print(f"Searching for : {searchstring}")
         google_results = search(searchstring, num=10, stop=10, pause=2)
+        extra_urls = ""
         # if wikipedia.summary(searchstring,sentences = 2):
         try:
+            print("entering try block")
             res = (
                 wikipedia.summary(searchstring, sentences=2)
                 + f"\nHere is more about {searchstring} : "
             )
+            print(res)
             for i in google_results:
-                # res += f"\n{i}"
-                print(f"\n{i}")
+                extra_urls += f"\n{i}"
+                # print(f"\n{i}")
         # return res
         # res = wolframalpha_search(searchstring)
         except Exception as exception:
+            print("entering exception block : ", exception)
             try:
+                print("entering try block inside exception block")
                 res = (
                     wolframalpha_search(searchstring)
                     + f"\nHere is more about {searchstring} : "
                 )
                 for i in google_results:
-                    res += f"\n{i}"
+                    # res += f"\n{i}"
+                    print(f"\n{i}")
+                    extra_urls += f"\n{i}"
             except Exception as e:
-
+                print("ex inside exception block : ", e)
                 res = (
                     f"Could not find a result for {searchstring}"
                     + f"\nHere is more about {searchstring} : "
                 )
+                print(res)
                 for i in google_results:
-                    # res += f"\n{i}"
+                    extra_urls += f"\n{i}"
                     print(f"\n{i}")
-
+                # print(f"urls : {extra_urls}")
         return res
     # elif "wit$get_time" in intent:
     #     # print("hullo0")
@@ -203,7 +217,8 @@ def act_by_intent(intent, inp):
 
 
 def work(q):
-    # if "weather" in q:
+    # print("ENTERED WORK METHOD!!!")
+    intent = ""
     try:
         intent = get_intent(q)
         # print(1)
@@ -213,7 +228,7 @@ def work(q):
             # print(res)
         print("INTENT : ", intent)
         res = act_by_intent(intent, q)
-        # print(f"RESULT {res}")
+        print(f"RESULT {res}")
         if res == None:
             data = query({"inputs": {"text": q}, "options": {"wait_for_model": True}})
             result = data["generated_text"]
@@ -221,10 +236,11 @@ def work(q):
         else:
             result = res
     except Exception as e:
-        # print("DID NOT GET ANY INTENT!!")
-        # print(f"ERROR : {e}")
-        data = query({"inputs": {"text": q}})
-        result = data["generated_text"]
+        if intent == 0:
+            print("DID NOT GET ANY INTENT!!")
+            print(f"ERROR : {e}")
+            data = query({"inputs": {"text": q}})
+            result = data["generated_text"]
         
     return result
 
