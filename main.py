@@ -53,20 +53,16 @@ headers = {"Authorization": f"Bearer {DIALOGPT_API_TOKEN}"}
 
 
 
-wolframalpha_client = wolframalpha.Client(WOLFRAMALPHA_API_KEY)
+wolframalpha_client = wolframalpha.Client("AYAJ6Y-K686QW5UA3")
 def wolframalpha_search(query):
     res = wolframalpha_client.query(query)
     ans = next(res.results).text
     return ans
 
 def query_wit(message):
-    WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
-    client = Wit(WIT_ACCESS_TOKEN)
-    resp = client.message(message)
-    return resp
-
-def get_intent(message):
-    WIT_ACCESS_TOKEN = "SD6F55A65VDP6RIAML7L3H4RWNOEFABP"
+    WIT_ACCESS_TOKEN = "OAGFU7QO7YG6KR3WEGWNA3SVWPQPOBDB"
+    client = Wit(WIT_ACCESS_TOKEN) 
+    WIT_ACCESS_TOKEN = "OAGFU7QO7YG6KR3WEGWNA3SVWPQPOBDB"
     client = Wit(WIT_ACCESS_TOKEN)
     resp = client.message(message)
     intent = resp["intents"][0]["name"]
@@ -218,6 +214,7 @@ def act_by_intent(intent, inp):
 
 def work(q):
     # print("ENTERED WORK METHOD!!!")
+    result = ""
     intent = ""
     try:
         intent = get_intent(q)
