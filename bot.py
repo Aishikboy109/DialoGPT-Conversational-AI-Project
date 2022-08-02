@@ -1,9 +1,6 @@
 import wolframalpha
 import pyttsx3
 from termcolor import cprint,colored
-# from colorama import Fore
-# import json
-# import requests
 from act_by_intent import act_by_intent
 from search import wolframalpha_search
 from dialogpt_request import query
