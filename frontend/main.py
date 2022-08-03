@@ -1,2 +1,0 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-# eikhane main flask er code ta jabe....tui video ta dekh sob explain kora ache...aste aste korte thak ar kichuta progress korle github e push kore dis ar amay janash

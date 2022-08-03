@@ -15,7 +15,7 @@ def wolframalpha_search(q):
         except Exception as e:
             try:
                 ans = requests.get(URL).text
-                if ans == "Wolfram|Alpha did not understand your input":
+                if ans == "Wolfram|Alpha did not understand your input" or ans == "No short answer available":
                     raise Exception("wolframalpha failed")
             except Exception as e:
                 try:

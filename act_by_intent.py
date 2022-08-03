@@ -2,6 +2,8 @@ import os
 from sys import platform
 import pyjokes
 import datetime
+from speak import speak
+from news import get_headlines
 
 def act_by_intent(query):
     if platform == "linux" or platform == "linux2":
@@ -36,6 +38,11 @@ def act_by_intent(query):
 
     elif ("time" or "what does the clock say" or "what is the clock saying") in query:
         return datetime.datetime.now().strftime("%I:%M %p")
-
+    
+    elif ("news" or "headlines") in query:
+        speak("Here is the top news headlines")
+        headlines = get_headlines()
+        for i in headlines:
+            speak(i)
     else:
         return None
